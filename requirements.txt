@@ -1,0 +1,17 @@
+# PeriMiner v1.0 — Python dependencies
+# Install with: pip install -r requirements.txt
+# See README below for spaCy model install step
+
+anthropic
+python-dotenv
+numpy
+pandas==1.5.3
+scikit-learn
+lightgbm
+shap
+statsmodels
+rapidfuzz
+spacy
+scispacy
+streamlit
+plotly

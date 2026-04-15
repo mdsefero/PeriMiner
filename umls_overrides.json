@@ -1,0 +1,194 @@
+{
+    "_comment": "Manual token-to-concept mappings. No PHI — purely lexical.",
+    "_comment_pre_nlp": "pre_nlp: substituted BEFORE spaCy — NLP still processes the result (lemma, chunks, etc). Use for abbreviations, typos, and synonym normalization so NLP gets clean input.",
+    "_comment_override_nlp": "override_nlp: substituted AFTER spaCy on the output tokens — bypasses NLP entirely for that token. Use ONLY when NLP mishandles a term even after pre_nlp normalization.",
+
+    "pre_nlp": {
+        "htn": "hypertension",
+        "pih": "pregnancy induced hypertension",
+
+        "pec": "preeclampsia",
+        "pre eclampsia": "preeclampsia",
+        "preeclamptic": "preeclampsia",
+
+        "gdm": "gestational diabetes",
+        "gestational diabetes mellitus": "gestational diabetes",
+        "t2dm": "type 2 diabetes mellitus",
+        "type 2 diabetes": "type 2 diabetes mellitus",
+        "type ii diabetes": "type 2 diabetes mellitus",
+        "t2d": "type 2 diabetes mellitus",
+        "t1dm": "type 1 diabetes mellitus",
+        "type 1 diabetes": "type 1 diabetes mellitus",
+        "type i diabetes": "type 1 diabetes mellitus",
+
+        "ptb": "preterm birth",
+        "preterm birth": "preterm birth",
+        "ptl": "preterm labor",
+        "preterm labor": "preterm labor",
+
+        "iugr": "intrauterine growth restriction",
+        "fgr": "fetal growth restriction",
+
+        "pprom": "preterm premature rupture of membranes",
+
+        "hellp": "hellp syndrome",
+
+        "sga": "small for gestational age",
+        "lga": "large for gestational age",
+
+        "ama": "advanced maternal age",
+
+        "ihcp": "intrahepatic cholestasis",
+        "cholestasis": "intrahepatic cholestasis",
+        "cholestasis of pregnancy": "intrahepatic cholestasis",
+        "intrahepatic cholestasis of pregnancy": "intrahepatic cholestasis",
+        "obstetric cholestasis": "intrahepatic cholestasis",
+        "itc": "intrahepatic cholestasis",
+
+        "ppd": "postpartum depression",
+
+        "uti": "urinary tract infection",
+
+        "gbs": "group b streptococcus",
+        "group b strep": "group b streptococcus",
+
+        "csection": "cesarean",
+        "c section": "cesarean",
+
+        "depressin": "depression",
+        "major depressive disorder": "depression",
+        "depressive disorder": "depression",
+
+        "post traumatic stress disorder": "post traumatic stress disorder",
+        "posttraumatic stress disorder": "post traumatic stress disorder",
+
+        "hepa": "hepatitis",
+
+        "transaminases": "transaminase",
+
+        "disrder": "disorder",
+
+        "d&c": "dilation and curettage",
+
+        "hpv": "human papillomavirus infection",
+        "human papillomavirus": "human papillomavirus infection",
+        "herpes simplex virus": "herpes simplex infection",
+        "herpes simplex virus 1": "herpes simplex infection",
+        "herpes simplex virus 2": "herpes simplex infection",
+        "hiv": "hiv infection",
+        "human immunodeficiency virus": "hiv infection",
+        "trichomonas": "trichomoniasis",
+        "bipolar": "bipolar disorder",
+        "chlamydia": "chlamydia infection",
+
+        "ghtn": "gestational hypertension",
+        "covid": "covid 19",
+        "covid-19": "covid 19",
+
+        "covid 19": "covid 19",
+        "factor v leiden": "factor v leiden mutation",
+        "tetralogy of fallot": "tetralogy of fallot",
+        "arthritis": "arthritis",
+        "goiter": "goiter",
+        "short cervix": "short cervix",
+        "periurethral laceration": "perineal laceration",
+        "mouth surgery": "oral surgical procedure",
+        "cervix surgery": "cervical surgical procedure",
+        "skin problems": "skin disorder",
+        "fetal intolerance": "non-reassuring fetal status",
+
+        "cytomegalovirus": "cytomegalovirus infection",
+        "ascus": "atypical squamous cells of undetermined significance",
+        "retained placenta": "retained placenta",
+        "placental abruption": "placental abruption",
+        "fetal demise": "fetal death",
+        "mthfr mutation": "mthfr mutation",
+        "neonatal demise": "neonatal death",
+        "spontaneous abortion": "spontaneous abortion",
+
+        "bladder serosal defect": "bladder serosal defect",
+        "cervical length abnormality": "short cervix",
+        "shortened cervical length": "short cervix",
+        "cervical scope": "cervical examination",
+        "aneuploidy screening": "aneuploidy screening",
+
+        "elevated cardiac output": "elevated cardiac output",
+        "decreased maternal serum alpha-fetoprotein": "decreased maternal serum alpha fetoprotein",
+        "risk for sepsis": "sepsis risk",
+        "risk of fetal demise": "fetal demise risk",
+
+        "absent aorta": "absent aorta",
+        "absent end diastolic flow": "absent end diastolic flow",
+        "absent end-diastolic flow": "absent end diastolic flow",
+
+        "benign breast fibroma": "breast fibroma",
+
+        "ehlers danlos syndrome type iii": "ehlers danlos syndrome type 3",
+
+        "rubella non immune": "rubella non immune",
+        "rubella non-immune": "rubella non immune",
+        "rubella non immune status": "rubella non immune",
+        "rubella non-immune status": "rubella non immune",
+        "varicella non-immune": "varicella non immune",
+        "varicella non-immune status": "varicella non immune",
+        "maternal varicella non-immune": "varicella non immune",
+
+        "high risk human papillomavirus": "high risk human papillomavirus",
+        "high-risk human papillomavirus": "high risk human papillomavirus",
+        "high-risk human papillomavirus positive": "high risk human papillomavirus",
+
+        "anemia": "anemia",
+        "obesity": "obesity",
+
+        "non falciparum malaria": "non falciparum malaria",
+
+        "fetal intolerance of labor": "non-reassuring fetal status",
+        "fetal intolerance to labor": "non-reassuring fetal status",
+        "non-reassuring fetal heart tones": "non-reassuring fetal status",
+        "non-reassuring fetal heart tracing": "non-reassuring fetal status",
+        "non-reassuring fetal heart rate": "non-reassuring fetal status",
+        "non-reassuring fetal heart rate tracing": "non-reassuring fetal status",
+        "nonreassuring fetal heart tones": "non-reassuring fetal status",
+        "category ii fetal heart tracings": "non-reassuring fetal status",
+        "fetal compromise": "non-reassuring fetal status",
+
+        "frenulectomy": "frenotomy",
+        "frenulotomy": "frenotomy",
+
+        "preterm newborn": "preterm birth",
+        "preterm live birth 20-36 weeks": "preterm birth",
+        "preterm live birth 20 to 36 weeks": "preterm birth",
+        "preterm twin newborn": "preterm birth",
+        "term live birth at 37 weeks or greater": "term birth",
+        "term live birth at \u226537 weeks": "term birth",
+
+        "superimposed preeclampsia": "superimposed preeclampsia",
+        "subchorionic hemorrhage": "subchorionic hemorrhage",
+        "meconium": "meconium",
+        "labial laceration": "labial laceration",
+        "sulcal laceration": "sulcal laceration",
+        "cervical funneling": "cervical funneling",
+        "postpartum anxiety": "postpartum anxiety",
+        "postpartum anemia": "postpartum anemia",
+        "gestational anemia": "gestational anemia",
+        "breech birth": "breech presentation",
+        "abdominal cerclage": "cerclage of cervix",
+        "previous cesarean scar": "cesarean section scar",
+        "uterine scar": "cesarean section scar",
+        "previous c section": "previous cesarean section",
+        "triplet gestation": "triplet pregnancy",
+        "adhesive disease": "tissue adhesions",
+        "low amniotic fluid index": "oligohydramnios",
+        "herpes simplex virus type 2": "herpes simplex infection",
+        "herpes simplex virus type ii": "herpes simplex infection",
+        "herpes simplex virus outbreak": "herpes simplex infection",
+        "anti-kell antibody": "anti kell antibody",
+        "hypoplastic pulmonary valve": "hypoplastic pulmonary valve",
+        "penile torsion": "penile torsion",
+        "slow transition to extrauterine life": "neonatal transition"
+    },
+
+    "override_nlp": {
+        "sickle cell trait": "sickle cell trait"
+    }
+}

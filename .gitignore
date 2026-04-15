@@ -1,0 +1,94 @@
+# ── Patient / research data — never commit ──────────────────────────────────
+# Raw MedSciNet exports (legacy PeribankDB_1-9 and 2026 PeribankDB_2026_1-10)
+PeribankDB*.txt
+
+# Pipeline intermediates and outputs
+PBDBfinal*
+
+# Pickle files (Ensemble dictionaries, ML output)
+*.pkl
+*.pkl.gz
+
+# ML_2 analysis cache
+.pm_cache/
+
+# DB_4b profiler output
+DB_4b_profile_output/
+
+# NLP diagnostic tool (standalone, not in pipeline)
+NLP_diagnostic_tool.py
+DB_5b_profile_output/
+
+# DB_3a side outputs
+Drug_spelling_matches.csv
+Corrected_drug_names_list.csv
+
+# UMLS concept map (generated from PHI data — tokens extracted from patient records)
+token_to_concept.json
+
+# ML_2 CSV exports
+*_feature_rank_*.csv
+
+# Usage log (contains hashed IPs — keep off version control)
+usage_log.csv
+
+# ── API credentials and Claude extraction artifacts ──────────────────────────
+.env
+claude_extraction_cache.json
+claude_batch_state.json
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Testing / tooling ───────────────────────────────────────────────────────
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ── Data / databases ────────────────────────────────────────────────────────
+data/
+databases/
+db/
+*.db
+*.sqlite
+*.sqlite3
+*.duckdb
+*.parquet
+*.feather
+*.h5
+*.joblib
+
+# ── Outputs / generated artifacts ────────────────────────────────────────────
+outputs/
+results/
+models/
+artifacts/
+logs/
+tmp/
+temp/
+cache/
+
+# ── Editors / IDEs ──────────────────────────────────────────────────────────
+.vscode/
+
+# ── OS junk ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+nul
+
+# ── Claude Code local settings ──────────────────────────────────────────────
+.claude/

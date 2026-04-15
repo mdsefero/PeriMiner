@@ -1,0 +1,106 @@
+Getting started with PeriMiner
+──────────────────────────────
+
+PeriMiner is a tool for exploring the PeriBank database. You give it a clinical
+concept (e.g. preeclampsia) and it figures out which patient features are most
+strongly associated using machine learning. Useful for discovery — find novel
+associations, or (with the right filters) estimate combined predictive power.
+
+PeriMiner supports two modes:
+
+  (1) Single cohort vs. rest — compare your cohort against everyone else in
+      PeriBank.
+
+  (2) Compare two cohorts — define Cohort A and Cohort B separately and
+      compare them directly against each other.
+
+Use the mode toggle at the top of the dashboard to switch.
+
+
+The Basic Flow:
+
+  1.  DEFINE YOUR COHORT
+  ───────────────────────
+  Type one or more synonymous search terms that capture your interest
+  (e.g. "preeclampsia", HELLP, "hypertension, magnesium sulfate").
+  The tool handles minor spelling variations automatically.
+  Then click Search Database.
+
+
+  2.  CHECK THE MATCHED COLUMNS
+  ───────────────────────────────
+  After searching, it shows you which parts of the database your terms were
+  found. Select anything that you want to include. Example, leave out
+  "previous pregnancy hx" if you only care about the current, or only select
+  it if that is your research question.
+
+
+  3.  REFINE WITH FILTERS (optional)
+  ────────────────────────────────────
+  After matching, you can apply term-level filters:
+
+  *  Must Have — only include subjects whose matched fields contain a
+     specific term (e.g., keep only "gestational diabetes" matches).
+
+  *  Must Exclude — remove subjects whose matched fields contain a
+     specific term (e.g., exclude anyone with "metformin" in their record).
+
+  This narrows the cohort without starting a new search.
+
+
+  4.  RUN THE ANALYSIS
+  ──────────────────────
+  Run Analysis. This takes one to two minutes. The tool trains a
+  model comparing your cohort against everyone else, then ranks every
+  database feature by how strongly it is associated with your cohort.
+
+
+  5.  EXPLORE AND REFINE THE RESULTS
+  ──────────────────────────────────────
+  Results appear in the Feature Management tab:
+
+  *  If you spot a feature that is obviously misleading — a diagnostic
+     feature that is part of the definition itself, for example — tick the
+     Remove box next to it and click Recompute. The analysis reruns
+     without that feature and the performance metrics update instantly.
+
+  *  If there are features you always want excluded regardless of what
+     you are searching for (maybe SBP on admission in our example),
+     use Pin current removals. Pinned features stay excluded even when
+     you start a completely new search.
+
+  *  You can also filter entire categories of features in or out using the
+     Category multiselect. Some categories (paternal info, extended family
+     history, contraceptive history, prior pregnancy complications) are
+     excluded by default to speed up the analysis.
+
+
+  6.  FEATURE DETAIL
+  ────────────────────
+  Select any feature from the ranked list to see its distribution:
+
+  *  Binary features — grouped bar chart showing prevalence in each cohort,
+     with odds ratio and confidence interval.
+
+  *  Continuous features — overlaid histograms comparing the two groups,
+     with rank-biserial correlation.
+
+  Imputed values are automatically excluded from the plots so you see only
+  real data.
+
+
+A FEW THINGS WORTH KNOWING
+────────────────────────────
+  *  The Advanced Settings panel on the left can be ignored for most
+     analyses. The defaults work well. For serious work select CV.
+
+  *  After you run, unselecting features, categories, pos/neg that aren't of
+     interest then rerun can really help focus your results.
+
+  *  To help interpret, features are colored. Yellow (used by the model)
+     means strongly associated but be cautious because it could just be
+     a correlate of a real feature of interest that is suppressed. Blue: not
+     used in the predictive model, but strongly associated (possibly suppressed
+     features), always worth reviewing.
+
+  *  Decrease "Min binary count" if you are looking at something rare.
