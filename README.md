@@ -1,6 +1,43 @@
 # PeriMiner
 
-Data-mining pipeline for the PeriBank perinatal clinical database. Transforms raw MedSciNet exports into an ML-ready pickle through Claude-powered concept extraction, UMLS normalization, medication fuzzy-matching, and feature booleanization.
+PeriMiner is an end-to-end research informatics platform for the PeriBank perinatal cohort at Baylor College of Medicine and Texas Children's Hospital. It ingests raw clinical exports, extracts and normalizes medical concepts from free-text fields, and produces an ML-ready feature matrix used to rank patient features most strongly associated with any user-defined cohort.
+
+The pipeline has been applied to more than 57,000 perinatal research records integrating structured clinical data, medications, free-text encounter notes, and a custom survey instrument (~30% of fields) covering medical and family history, demographics, socioeconomic status, and environmental exposures including hurricane impact. An interactive Streamlit dashboard supports two analysis modes (single cohort vs. rest, or two-cohort head-to-head) with LightGBM + SHAP feature ranking, mutual information and importance scores, interactive filtering, and per-feature distribution views with effect-size estimates.
+
+PeriMiner is a research tool, not a production clinical system. The underlying database is partially abstracted from the medical record and intended for retrospective hypothesis generation. This repository contains code only; PeriBank data is restricted and not distributed here.
+
+## Screenshots
+
+Cohort summary with model performance and ROC curve. Example shown: an anemia cohort (n=19,438) against the rest of PeriBank (n=58,475), 80/20 train-test split, ROC-AUC 0.754.
+
+![Dashboard overview](docs/dashboard-overview.png)
+
+Feature ranking table. Each row is a database feature scored by SHAP, mutual information, and LightGBM importance; categories are filterable from the bar above; features can be removed and the model re-ranked in place.
+
+![Feature rankings](docs/feature-rankings.png)
+
+Per-feature detail for a binary feature, showing prevalence in cohort vs. comparator with odds ratio.
+
+![Binary feature detail](docs/feature-detail-binary.png)
+
+Per-feature detail for a continuous feature, showing overlaid distributions with rank-biserial correlation as effect size.
+
+![Continuous feature detail](docs/feature-detail-continuous.png)
+
+## Dashboard
+
+```bash
+streamlit run dashboard.py
+```
+
+The dashboard supports two analysis modes:
+
+- **Single cohort vs. rest**: define one cohort by search terms; ML compares it against all other subjects in PeriBank.
+- **Compare two cohorts**: define Cohort A and Cohort B separately; ML compares them directly against each other.
+
+Features include boolean cohort filtering, interactive feature ranking with LightGBM + SHAP, category-based feature management, and per-feature distribution plots.
+
+See `PeriMiner Quickstart.txt` for a plain-language walkthrough of the dashboard workflow.
 
 ## Pipeline
 
@@ -16,12 +53,12 @@ DB_4  Build UMLS concept map (scispaCy) → token_to_concept.json
 DB_5a  Meds fuzzy-match + boolean ─┐
 DB_5b  NLP free-text → boolean     ├─ (run in parallel)
   ↓                                │
-DB_6  Reassemble → PBDBfinal_ready_forML_IHCP_paper3.pkl
+DB_6  Reassemble → PBDBfinal_ready_forML.pkl
 ```
 
 | Script | Description |
 |---|---|
-| `DB_0_build_pipeline.py` | Orchestrator — runs the full pipeline in dependency order |
+| `DB_0_build_pipeline.py` | Orchestrator: runs the full pipeline in dependency order |
 | `DB_1_recreate.py` | Consolidates PeribankDB export files, applies PREFIX__column naming |
 | `DB_2_clean.py` | Data curation, reduction, feature selection; splits into cleaned/meds/details CSVs |
 | `DB_3_claude_extract.py` | Extracts medical concepts from free-text via Claude Batch API (resumable, cached) |
@@ -36,7 +73,29 @@ DB_6  Reassemble → PBDBfinal_ready_forML_IHCP_paper3.pkl
 |---|---|
 | `ML_1_Subject_search.py` | Cohort search with morphological expansion and fuzzy matching |
 | `ML_2_most_unique.py` | Univariate + discriminative feature ranking (LightGBM, SHAP, MI) |
-| `dashboard.py` | Streamlit dashboard — single-cohort or dual-cohort comparison analysis |
+| `dashboard.py` | Streamlit dashboard for single-cohort or dual-cohort comparison analysis |
+
+## Claude concept extraction (DB_3)
+
+DB_3 submits free-text cells to the Anthropic Batch API for medical concept extraction. It is fully resumable, re-running costs nothing for already-cached cells. Requires `ANTHROPIC_API_KEY` in `.env`.
+
+```bash
+python DB_3_claude_extract.py                # full run
+python DB_3_claude_extract.py --poll-only    # resume after interruption
+python DB_3_claude_extract.py --dry-run      # estimate cost without submitting
+```
+
+## UMLS concept normalization (DB_4)
+
+DB_4 uses scispaCy's EntityLinker to map Claude-extracted concepts to canonical UMLS names. This collapses synonyms/abbreviations (e.g. "htn", "hypertensive", "hypertension" all become `hypertension`) and strengthens ML signal.
+
+- `umls_overrides.json`: Manual token-to-concept mappings that override UMLS. Human-editable, no PHI.
+- `token_to_concept.json`: Generated mapping (gitignored, contains tokens from patient records).
+
+To rebuild the concept map:
+```bash
+python DB_4_build_umls_map.py
+```
 
 ## Installation
 
@@ -44,8 +103,8 @@ DB_6  Reassemble → PBDBfinal_ready_forML_IHCP_paper3.pkl
 
 ```bash
 # Clone the repository
-git clone https://github.com/mdsefero/PeriMiner_v1.0.git
-cd PeriMiner_v1.0
+git clone https://github.com/mdsefero/PeriMiner.git
+cd PeriMiner
 
 # Create and activate a virtual environment
 python -m venv .venv
@@ -78,48 +137,11 @@ python DB_0_build_pipeline.py --from DB_6
 python DB_0_build_pipeline.py --dry-run
 ```
 
-## Dashboard
-
-```bash
-streamlit run dashboard.py
-```
-
-The dashboard supports two analysis modes:
-
-- **Single cohort vs. rest** — define one cohort by search terms; ML compares it against all other subjects in PeriBank.
-- **Compare two cohorts** — define Cohort A and Cohort B separately; ML compares them directly against each other.
-
-Features include boolean cohort filtering, interactive feature ranking with LightGBM + SHAP, category-based feature management, and per-feature distribution plots.
-
-See `PeriMiner Quickstart.txt` for a plain-language walkthrough of the dashboard workflow.
-
-## Claude concept extraction (DB_3)
-
-DB_3 submits free-text cells to the Anthropic Batch API for medical concept extraction. It is fully resumable — re-running costs nothing for already-cached cells. Requires `ANTHROPIC_API_KEY` in `.env`.
-
-```bash
-python DB_3_claude_extract.py                # full run
-python DB_3_claude_extract.py --poll-only    # resume after interruption
-python DB_3_claude_extract.py --dry-run      # estimate cost without submitting
-```
-
-## UMLS concept normalization (DB_4)
-
-DB_4 uses scispaCy's EntityLinker to map Claude-extracted concepts to canonical UMLS names. This collapses synonyms/abbreviations (e.g. "htn", "hypertensive", "hypertension" all become `hypertension`) and strengthens ML signal.
-
-- `umls_overrides.json` — Manual token-to-concept mappings that override UMLS. Human-editable, no PHI.
-- `token_to_concept.json` — Generated mapping (gitignored, contains tokens from patient records).
-
-To rebuild the concept map:
-```bash
-python DB_4_build_umls_map.py
-```
-
 ## License
 
 BSD 3-Clause. See [LICENSE](LICENSE) for details.
 
 ## Author
 
-Maxim Seferovic, seferovi@bcm.edu
+Maxim D. Seferovic, PhD, seferovi@bcm.edu  
 Baylor College of Medicine

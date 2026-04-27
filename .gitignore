@@ -90,5 +90,11 @@ Thumbs.db
 desktop.ini
 nul
 
+# ── Images ──────────────────────────────────────────────────────────────────
+# Block stray PNGs (dashboard screenshots may include cohort terms / counts);
+# allow curated README assets under docs/.
+*.png
+!docs/*.png
+
 # ── Claude Code local settings ──────────────────────────────────────────────
 .claude/
