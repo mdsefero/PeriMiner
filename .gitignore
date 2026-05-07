@@ -98,3 +98,4 @@ nul
 
 # ── Claude Code local settings ──────────────────────────────────────────────
 .claude/
+.codex
